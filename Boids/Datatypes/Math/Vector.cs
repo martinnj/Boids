@@ -61,6 +61,16 @@ namespace Datatypes.Math
             return c;
         }
 
+        public static Vector Scale(Vector a, int scalar)
+        {
+            var res = new Vector(a.Dimensions);
+            for (var i = 0; i < a.Dimensions; i++)
+            {
+                res[i] = a[i] * scalar;
+            }
+            return res;
+        }
+
         #endregion
 
         #region "Old code"
