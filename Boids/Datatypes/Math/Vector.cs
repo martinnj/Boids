@@ -35,7 +35,7 @@ namespace Datatypes.Math
         #endregion
 
         // Add the ability to index directly in the vectors values.
-        protected decimal this[int i]
+        public decimal this[int i]
         {
             get { return _values[i]; }
             set { _values[i] = value; }
