@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Datatypes.Exceptions;
 
 namespace Datatypes.Math
@@ -8,8 +7,12 @@ namespace Datatypes.Math
      */
     public class Vector
     {
+        #region "Variables"
         public int Dimensions { get; private set; }
+        // ReSharper disable FieldCanBeMadeReadOnly.Local
         private decimal[] _values;
+        // ReSharper restore FieldCanBeMadeReadOnly.Local
+        #endregion
 
         #region "Constructors"
         // Initialises the N-dimension vector with all fields set to 0.
