@@ -1,3 +1,4 @@
+using System;
 using Datatypes.Exceptions;
 
 namespace Datatypes.Math
@@ -98,11 +99,33 @@ namespace Datatypes.Math
         }
 
         // Scale "this" vector with a scalar.
-        public void Scale(int a)
+        public void Scale(int s)
         {
             for (var i = 0; i < Dimensions; i++)
             {
-                _values[i] *= i;
+                _values[i] *= s;
+            }
+        }
+
+        // Divide a vector with a scalar
+        // Will throw exception if scalar is 0.
+        public void Div(Vector a, int s)
+        {
+            if (s == 0) throw new ArgumentException("Scalar cannot be zero.");
+            for (var i = 0; i < a.Dimensions; i++)
+            {
+                a[i] /= s;
+            }
+        }
+
+        // Divide "this" vector with a scalar
+        // Will throw exception if scalar is 0.
+        public void Div(int s)
+        {
+            if (s == 0) throw new ArgumentException("Scalar cannot be zero.");
+            for (var i = 0; i < Dimensions; i++)
+            {
+                _values[i] /= s;
             }
         }
 
