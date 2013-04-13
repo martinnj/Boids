@@ -46,7 +46,7 @@ namespace Datatypes.Math
         // Add two vectors together and return the resulting vector.
         public static Vector Add(Vector a, Vector b)
         {
-            if (a.Dimensions != b.Dimensions) throw new InvalidVectorDimensions("a and b have different dimensions.");
+            if (a.Dimensions != b.Dimensions) throw new InvalidVectorDimensions("a and b have different dimensions. (" + a.Dimensions + " != " + b.Dimensions + ")");
             var c = new Vector(a.Dimensions);
             for (var i = 0; i < a.Dimensions; i++)
             {
@@ -58,7 +58,7 @@ namespace Datatypes.Math
         // Add a vector to"this" vector.
         public void Add(Vector a)
         {
-            if (a.Dimensions != Dimensions) throw new InvalidVectorDimensions("a dimensions does not match.");
+            if (a.Dimensions != Dimensions) throw new InvalidVectorDimensions("a dimensions(" + a.Dimensions + ") does not match own dimensions(" + Dimensions + ").");
             for (var i = 0; i < a.Dimensions; i++)
             {
                 _values[i] += _values[i];
@@ -68,7 +68,7 @@ namespace Datatypes.Math
         // Subtract two vectors and return the resulting vector.
         public static Vector Subtract(Vector a, Vector b)
         {
-            if (a.Dimensions != b.Dimensions) throw new InvalidVectorDimensions("a and b have different dimensions.");
+            if (a.Dimensions != b.Dimensions) throw new InvalidVectorDimensions("a and b have different dimensions. (" + a.Dimensions + " != " + b.Dimensions + ")");
             var c = new Vector(a.Dimensions);
             for (var i = 0; i < a.Dimensions; i++)
             {
@@ -80,7 +80,7 @@ namespace Datatypes.Math
         // Subtract a vector from "this" vector.
         public void Subtract(Vector a)
         {
-            if (a.Dimensions != Dimensions) throw new InvalidVectorDimensions("a dimensions does not match.");
+            if (a.Dimensions != Dimensions) throw new InvalidVectorDimensions("a dimensions(" + a.Dimensions + ") does not match own dimensions(" + Dimensions + ").");
             for (var i = 0; i < a.Dimensions; i++)
             {
                 _values[i] -= a[i];
@@ -109,7 +109,7 @@ namespace Datatypes.Math
 
         // Divide a vector with a scalar
         // Will throw exception if scalar is 0.
-        public void Div(Vector a, int s)
+        public static void Div(Vector a, int s)
         {
             if (s == 0) throw new ArgumentException("Scalar cannot be zero.");
             for (var i = 0; i < a.Dimensions; i++)
@@ -128,6 +128,18 @@ namespace Datatypes.Math
                 _values[i] /= s;
             }
         }
+
+        
+
+        //// function to multiply 2 vectors (cross product)
+        //public static vector multiply(vector A, vector B)
+        //{
+        //    vector res = new vector(0, 0, 0);
+        //    res.x = A.y * B.z - A.z * B.y;
+        //    res.y = A.z * B.x - A.x * B.z;
+        //    res.z = A.x * B.y - A.y * B.x;
+        //    return res;
+        //}
 
         #endregion
 
