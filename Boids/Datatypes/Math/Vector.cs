@@ -9,6 +9,7 @@ namespace Datatypes.Math
      */
     public class Vector
     {
+
         #region "Variables"
         public int Dimensions { get; private set; }
         // ReSharper disable FieldCanBeMadeReadOnly.Local
@@ -219,21 +220,14 @@ namespace Datatypes.Math
         #endregion
 
         #region "Equality functions"
-        // Checks if two vectors are equal to one another in terms of dimensions and values.
-        public static bool Equals(Vector a, Vector b)
-        {
-            if (a.Dimensions != b.Dimensions) return false;
-            var res = true;
-            for (var i = 0; i < a.Dimensions; i++)
-            {
-                res &= (a[i] == b[i]);
-            }
-            return res;
-        }
-
         // Check if a vector equals "this" vector in terms of dimensions and values.
-        public bool Equals(Vector a)
+        public override bool Equals(System.Object obj)
         {
+            if (obj == null) return false; // If object is null, return false.
+            var a = obj as Vector;
+            if ((System.Object) a == null) return false; // If object cannot be cast to Vector, return false.
+
+            // Do actual vector matching.
             if (a.Dimensions != Dimensions) return false;
             var res = true;
             for (var i = 0; i < a.Dimensions; i++)
@@ -241,6 +235,30 @@ namespace Datatypes.Math
                 res &= (a[i] == _values[i]);
             }
             return res;
+        }
+
+        // Checks if two vectors are equal to one another in terms of dimensions and values.
+        public static bool Equals(Vector a, Vector b)
+        {
+            return a.Equals(b);
+        }
+        
+        protected bool Equals(Vector a)
+        {
+            if (a == null) throw new ArgumentNullException("a");
+            if (a.Dimensions != Dimensions) return false;
+            var res = true;
+            for (var i = 0; i < a.Dimensions; i++)
+            {
+                res &= (a[i] == _values[i]);
+            }
+            return res;
+        }
+
+        public override int GetHashCode()
+        {
+            //TODO: Fix this, it will break for long arrays with big numbers.
+            return Convert.ToInt32(Dimensions + Dot(this,this));
         }
         #endregion
 
