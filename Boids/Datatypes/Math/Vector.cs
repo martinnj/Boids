@@ -129,7 +129,7 @@ namespace Datatypes.Math
             }
         }
 
-        // Calculate the cross-product of two vectors og same dimensions.
+        // Calculate the cross-product of two vectors of same dimensions.
         public static Vector Cross(Vector a, Vector b)
         {
             if (a.Dimensions != b.Dimensions) throw new InvalidVectorDimensions("a and b have different dimensions. (" + a.Dimensions + " != " + b.Dimensions + ")");
@@ -147,13 +147,37 @@ namespace Datatypes.Math
         {
             if (a.Dimensions != Dimensions) throw new InvalidVectorDimensions("a dimensions(" + a.Dimensions + ") does not match own dimensions(" + Dimensions + ").");
             var c = new Vector(a.Dimensions);
-            var me = new Vector(_values); // Create a copy of original values to prevent screqing up results when i wraps around.
+            var me = new Vector(_values); // Create a copy of original values to prevent screwing up results when i wraps around.
             var d = a.Dimensions;
             for (var i = 0; i < a.Dimensions; i++)
             {
                 _values[i] = me[(i + 1) % d] * a[(i + 2) % d] - me[(i + 2) % d] * a[(i + 1) % d];
             }
             return c;
+        }
+
+        // Calculate the dot product of 2 vectors of same dimensions.
+        public static decimal Dot(Vector a, Vector b)
+        {
+            if (a.Dimensions != b.Dimensions) throw new InvalidVectorDimensions("a and b have different dimensions. (" + a.Dimensions + " != " + b.Dimensions + ")");
+            decimal sum = 0;
+            for (var i = 0; i < a.Dimensions; i++)
+            {
+                sum += a[i] + b[i];
+            }
+            return sum;
+        }
+
+        // Calculate the dot product of this vector and another vector with same dimensions.
+        public decimal Dot(Vector a)
+        {
+            if (a.Dimensions != Dimensions) throw new InvalidVectorDimensions("a dimensions(" + a.Dimensions + ") does not match own dimensions(" + Dimensions + ").");
+            decimal sum = 0;
+            for (var i = 0; i < a.Dimensions; i++)
+            {
+                sum += a[i] + _values[i];
+            }
+            return sum;
         }
 
         #endregion
