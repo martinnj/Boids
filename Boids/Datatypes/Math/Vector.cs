@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using Datatypes.Exceptions;
 
 namespace Datatypes.Math
@@ -229,6 +230,18 @@ namespace Datatypes.Math
             }
             return res;
         }
+
+        // Check if a vector equals "this" vector in terms of dimensions and values.
+        public bool Equals(Vector a)
+        {
+            if (a.Dimensions != Dimensions) return false;
+            var res = true;
+            for (var i = 0; i < a.Dimensions; i++)
+            {
+                res &= (a[i] == _values[i]);
+            }
+            return res;
+        }
         #endregion
 
         #region "Operator overrides"
@@ -275,58 +288,27 @@ namespace Datatypes.Math
 
         #endregion
 
-        #region "Old code"
+        #region "Convinience functions"
 
-        //// override ==operator to use vectors.
-        //public static bool operator ==(vector A, vector B)
-        //{
-        //    bool res = Equals(A, B);
-        //    return res;
-        //}
+        public new string ToString()
+        {
+            var sb = new StringBuilder(); // Use stringbuffer to prevent concat-performance-drop when using massive vectors.
+            sb.Append("[");
+            for (var i = 0; i < Dimensions; i++)
+            {
+                sb.Append(_values[i]);
+                sb.Append(" , ");
+            }
+            sb.Remove(sb.Length - 3, 3);
+            sb.Append("]");
+            return sb.ToString();
+        }
 
-        //// override !=operator to use vectors.
-        //public static bool operator !=(vector A, vector B)
-        //{
-        //    bool res = !Equals(A, B);
-        //    return res;
-        //}
-        //#endregion
+        public static string ToString(Vector a)
+        {
+            return a.ToString();
+        }
 
-        //#region "comparison functions"
-
-        //// compare instantiated vector to some other one
-        //public bool Equals(vector B)
-        //{
-        //    bool bx = this.X == B.x;
-        //    bool by = this.y == B.y;
-        //    bool bz = this.z == B.z;
-        //    return bx && by && bz;
-        //}
-        //#endregion
-
-
-        //public override string ToString()
-        //{
-        //    return "[" + X + "," + y + "," + z + "]";
-        //}
-
-        ///* Note:
-        // * This function is a crude implement only used for
-        // * controlling the velocity of my boids during simulation
-        // * TODO: Find a way to limit speed via behavior this is BAD
-        // */
-        //public void limit(int i)
-        //{
-        //    // upper limits
-        //    X = X < i ? X : i;
-        //    y = y < i ? y : i;
-        //    z = z < i ? z : i;
-        //    // lower limits
-        //    X = X > -i ? X : -i;
-        //    y = y > -i ? y : -i;
-        //    z = z > -i ? z : -i;
-
-        //}
         #endregion
     }
 }
