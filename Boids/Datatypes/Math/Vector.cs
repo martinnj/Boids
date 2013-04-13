@@ -10,7 +10,7 @@ namespace Datatypes.Math
         #region "Variables"
         public int Dimensions { get; private set; }
         // ReSharper disable FieldCanBeMadeReadOnly.Local
-        private decimal[] _values;
+        private static decimal[] _values;
         // ReSharper restore FieldCanBeMadeReadOnly.Local
         #endregion
 
@@ -42,6 +42,7 @@ namespace Datatypes.Math
         }
 
         #region "Math"
+        // Add two vectors together and return the resulting vector.
         public static Vector Add(Vector a, Vector b)
         {
             if (a.Dimensions != b.Dimensions) throw new InvalidVectorDimensions("a and b have different dimensions.");
@@ -53,6 +54,17 @@ namespace Datatypes.Math
             return c;
         }
 
+        // Add a vector to"this" vector.
+        public void Add(Vector a)
+        {
+            if (a.Dimensions != Dimensions) throw new InvalidVectorDimensions("a dimensions does not match.");
+            for (var i = 0; i < a.Dimensions; i++)
+            {
+                _values[i] += _values[i];
+            }
+        }
+
+        // Subtract two vectors and return the resulting vector.
         public static Vector Subtract(Vector a, Vector b)
         {
             if (a.Dimensions != b.Dimensions) throw new InvalidVectorDimensions("a and b have different dimensions.");
@@ -64,6 +76,17 @@ namespace Datatypes.Math
             return c;
         }
 
+        // Subtract a vector from "this" vector.
+        public void Subtract(Vector a)
+        {
+            if (a.Dimensions != Dimensions) throw new InvalidVectorDimensions("a dimensions does not match.");
+            for (var i = 0; i < a.Dimensions; i++)
+            {
+                _values[i] -= a[i];
+            }
+        }
+
+        // Scale a vector with as scalar.
         public static Vector Scale(Vector a, int scalar)
         {
             var res = new Vector(a.Dimensions);
@@ -72,6 +95,15 @@ namespace Datatypes.Math
                 res[i] = a[i] * scalar;
             }
             return res;
+        }
+
+        // Scale "this" vector with a scalar.
+        public void Scale(int a)
+        {
+            for (var i = 0; i < Dimensions; i++)
+            {
+                _values[i] *= i;
+            }
         }
 
         #endregion
