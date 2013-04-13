@@ -109,13 +109,15 @@ namespace Datatypes.Math
 
         // Divide a vector with a scalar
         // Will throw exception if scalar is 0.
-        public static void Div(Vector a, int s)
+        public static Vector Div(Vector a, int s)
         {
             if (s == 0) throw new ArgumentException("Scalar cannot be zero.");
+            var b = new Vector(a.Dimensions);
             for (var i = 0; i < a.Dimensions; i++)
             {
-                a[i] /= s;
+                b[i] = a[i]/s;
             }
+            return b;
         }
 
         // Divide "this" vector with a scalar
@@ -183,12 +185,14 @@ namespace Datatypes.Math
         // Returns the length of a vector.
         public static double Length(Vector a)
         {
+            //TODO: find a way to avoid the conversion from decimal to double.
             return System.Math.Sqrt( Convert.ToDouble(a.Dot(a)) );
         }
 
         // Return the length of this vector. Note this is not the Dimensions!
         public double Length()
         {
+            //TODO: find a way to avoid the conversion from decimal to double.
             return System.Math.Sqrt( Convert.ToDouble(Dot(this)) );
         }
 
@@ -214,93 +218,27 @@ namespace Datatypes.Math
 
         #endregion
 
+        #region "Operator overrides"
+        public static Vector operator +(Vector a, Vector b)
+        {
+            return Add(a, b);
+        }
+        public static Vector operator -(Vector a, Vector b)
+        {
+            return Subtract(a, b);
+        }
+        public static Vector operator *(Vector a, int s)
+        {
+            return Scale(a, s);
+        }
+        public static Vector operator /(Vector a, int s)
+        {
+            return Div(a, s);
+        }
+        #endregion
+
         #region "Old code"
-        //// coordinate variables.
-        //public decimal X;
-        //public decimal Y;
-        //public decimal Z;
 
-        //// Constructor
-        //public Vector(decimal x, decimal y, decimal z)
-        //{
-        //    this.X = x;
-        //    this.y = y;
-        //    this.z = z;
-        //}
-
-        //#region "functions for math stuffs"
-        //// adds two vectors
-        //public static vector add(vector A, vector B)
-        //{
-        //    vector res = new vector(0, 0, 0);
-        //    res.x = A.x + B.x;
-        //    res.y = A.y + B.y;
-        //    res.z = A.z + B.z;
-        //    return res;
-        //}
-
-        //// subtracts two vectors
-        //public static vector sub(vector A, vector B)
-        //{
-        //    vector res = new vector(0, 0, 0);
-        //    res.x = A.x - B.x;
-        //    res.y = A.y - B.y;
-        //    res.z = A.z - B.z;
-        //    return res;
-        //}
-
-        //// function for multiplying a scalar unto the vector
-        //public static vector scale(vector A, int scalar)
-        //{
-        //    vector res = new vector(0, 0, 0);
-        //    res.x = A.x * scalar;
-        //    res.y = A.y * scalar;
-        //    res.z = A.z * scalar;
-        //    return res;
-        //}
-
-        //// function for dividing a vector with a scalar
-        //// scalar prevented from being 0.
-        //public static vector div(vector A, int scalar)
-        //{
-        //    vector res = new vector(0, 0, 0);
-        //    scalar = scalar==0 ? 1:scalar;
-        //    res.x = A.x / scalar;
-        //    res.y = A.y / scalar;
-        //    res.z = A.z / scalar;
-        //    return res;
-        //}
-
-        //// function to multiply 2 vectors (cross product)
-        //public static vector multiply(vector A, vector B)
-        //{
-        //    vector res = new vector(0, 0, 0);
-        //    res.x = A.y * B.z - A.z * B.y;
-        //    res.y = A.z * B.x - A.x * B.z;
-        //    res.z = A.x * B.y - A.y * B.x;
-        //    return res;
-        //}
-
-        //// function to compute "dot product" for 2 vectors
-        //public static decimal dot(vector A, vector B)
-        //{
-        //    return A.x * B.x + A.y*B.y + A.z*B.z;
-        //}
-
-        //// function that returns the length of the vector
-        //// TODO:FIXME: EEEWWW A lot of casting going on here!!
-        //public static decimal length(vector A)
-        //{
-        //    return (decimal) Math.Sqrt((double) vector.dot(A,A));
-        //}
-
-        //// function to invert a vector (i.e. change sign)
-        //public static vector invert(vector A)
-        //{
-        //    return new vector(-A.x, -A.y, -A.z);
-        //}
-
-        //#endregion
 
         //#region "operator overrides"
         //// override +operator to use vectors.
