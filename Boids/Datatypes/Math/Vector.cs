@@ -129,17 +129,32 @@ namespace Datatypes.Math
             }
         }
 
-        
+        // Calculate the cross-product of two vectors og same dimensions.
+        public static Vector Cross(Vector a, Vector b)
+        {
+            if (a.Dimensions != b.Dimensions) throw new InvalidVectorDimensions("a and b have different dimensions. (" + a.Dimensions + " != " + b.Dimensions + ")");
+            var c = new Vector(a.Dimensions);
+            var d = a.Dimensions;
+            for (var i = 0; i < a.Dimensions; i++)
+            {
+                c[i] = a[(i + 1) % d] * b[(i + 2) % d] - a[(i + 2) % d] * b[(i + 1) % d];
+            }
+            return c;
+        }
 
-        //// function to multiply 2 vectors (cross product)
-        //public static vector multiply(vector A, vector B)
-        //{
-        //    vector res = new vector(0, 0, 0);
-        //    res.x = A.y * B.z - A.z * B.y;
-        //    res.y = A.z * B.x - A.x * B.z;
-        //    res.z = A.x * B.y - A.y * B.x;
-        //    return res;
-        //}
+        // Cross a vector with "this" vector.
+        public Vector Cross(Vector a)
+        {
+            if (a.Dimensions != Dimensions) throw new InvalidVectorDimensions("a dimensions(" + a.Dimensions + ") does not match own dimensions(" + Dimensions + ").");
+            var c = new Vector(a.Dimensions);
+            var me = new Vector(_values); // Create a copy of original values to prevent screqing up results when i wraps around.
+            var d = a.Dimensions;
+            for (var i = 0; i < a.Dimensions; i++)
+            {
+                _values[i] = me[(i + 1) % d] * a[(i + 2) % d] - me[(i + 2) % d] * a[(i + 1) % d];
+            }
+            return c;
+        }
 
         #endregion
 
