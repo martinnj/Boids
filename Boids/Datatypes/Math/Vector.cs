@@ -5,7 +5,10 @@ using Datatypes.Exceptions;
 namespace Datatypes.Math
 {
     /*
-     * Class used to represent an N-dimension vector
+     * Class used to represent an N-dimension vector.
+     * Possible changes:
+     * Find overrides for dot and cross products despite shared signature.
+     * Add functions for "adding/subtracting" a constant to all fields in the vector.
      */
     public class Vector
     {
