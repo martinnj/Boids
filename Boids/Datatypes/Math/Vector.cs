@@ -215,77 +215,67 @@ namespace Datatypes.Math
                 this[i] *= -1;
             }
         }
+        #endregion
 
+        #region "Equality functions"
+        // Checks if two vectors are equal to one another in terms of dimensions and values.
+        public static bool Equals(Vector a, Vector b)
+        {
+            if (a.Dimensions != b.Dimensions) return false;
+            var res = true;
+            for (var i = 0; i < a.Dimensions; i++)
+            {
+                res &= (a[i] == b[i]);
+            }
+            return res;
+        }
         #endregion
 
         #region "Operator overrides"
+        // Override plus operator for vector addition.
         public static Vector operator +(Vector a, Vector b)
         {
             return Add(a, b);
         }
+
+        // Override minus operator for vector subtraction.
         public static Vector operator -(Vector a, Vector b)
         {
             return Subtract(a, b);
         }
+
+        // Override minus operator for vector inversion.
+        public static Vector operator -(Vector a)
+        {
+            return Inverse(a);
+        }
+
+        // Override asterisk operator for vector scaling.
         public static Vector operator *(Vector a, int s)
         {
             return Scale(a, s);
         }
+        //TODO: Find sensible overrides for cross/dot.
+
+        // Override slash operator for vector division/scaling.
         public static Vector operator /(Vector a, int s)
         {
             return Div(a, s);
         }
+
+        // Override equality operators for vector comparison.
+        public static bool operator ==(Vector a, Vector b)
+        {
+            throw new NotImplementedException();
+        }
+        public static bool operator !=(Vector a, Vector b)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region "Old code"
-
-
-        //#region "operator overrides"
-        //// override +operator to use vectors.
-        //public static vector operator +(vector A, vector B)
-        //{
-        //    vector res = new vector(0, 0, 0);
-        //    res = add(A, B);
-        //    return res;
-        //}
-
-        //// override -operator to use vectors.
-        //public static vector operator -(vector A, vector B)
-        //{
-        //    vector res = new vector(0, 0, 0);
-        //    res = sub(A, B);
-        //    return res;
-        //}
-
-        //// override -operator to use as inverter
-        //public static vector operator -(vector A)
-        //{
-        //    return invert(A);
-        //}
-
-        //// override *operator to use vectors.
-        //public static vector operator *(vector A, vector B)
-        //{
-        //    vector res = new vector(0, 0, 0);
-        //    res = multiply(A, B);
-        //    return res;
-        //}
-
-        //// override *operator to use vector and scalar.
-        //public static vector operator *(vector A, int scalar)
-        //{
-        //    vector res = new vector(0, 0, 0);
-        //    res = scale(A, scalar);
-        //    return res;
-        //}
-
-        //// override /operator
-        //public static vector operator /(vector A, int scalar)
-        //{
-        //    vector res = new vector(0, 0, 0);
-        //    res = div(A, scalar);
-        //    return res;
-        //}
 
         //// override ==operator to use vectors.
         //public static bool operator ==(vector A, vector B)
