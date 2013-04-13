@@ -266,11 +266,11 @@ namespace Datatypes.Math
         // Override equality operators for vector comparison.
         public static bool operator ==(Vector a, Vector b)
         {
-            throw new NotImplementedException();
+            return Equals(a, b);
         }
         public static bool operator !=(Vector a, Vector b)
         {
-            throw new NotImplementedException();
+            return !Equals(a, b);
         }
 
         #endregion
