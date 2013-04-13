@@ -221,11 +221,11 @@ namespace Datatypes.Math
 
         #region "Equality functions"
         // Check if a vector equals "this" vector in terms of dimensions and values.
-        public override bool Equals(System.Object obj)
+        public override bool Equals(Object obj)
         {
             if (obj == null) return false; // If object is null, return false.
             var a = obj as Vector;
-            if ((System.Object) a == null) return false; // If object cannot be cast to Vector, return false.
+            if ((Object) a == null) return false; // If object cannot be cast to Vector, return false.
 
             // Do actual vector matching.
             if (a.Dimensions != Dimensions) return false;
