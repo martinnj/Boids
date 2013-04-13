@@ -180,6 +180,38 @@ namespace Datatypes.Math
             return sum;
         }
 
+        // Returns the length of a vector.
+        public static double Length(Vector a)
+        {
+            return System.Math.Sqrt( Convert.ToDouble(a.Dot(a)) );
+        }
+
+        // Return the length of this vector. Note this is not the Dimensions!
+        public double Length()
+        {
+            return System.Math.Sqrt( Convert.ToDouble(Dot(this)) );
+        }
+
+        // Invert a vector.
+        public static Vector Inverse(Vector a)
+        {
+            var b = new Vector(a.Dimensions);
+            for (var i = 0; i < a.Dimensions; i++)
+            {
+                b[i] = a[i] * -1;
+            }
+            return b;
+        }
+
+        // Inverts "this" vector.
+        public void Inverse()
+        {
+            for (var i = 0; i < Dimensions; i++)
+            {
+                this[i] *= -1;
+            }
+        }
+
         #endregion
 
         #region "Old code"
