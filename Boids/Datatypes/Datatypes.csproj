@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Boids\Boid.cs" />
+    <Compile Include="Boids\World.cs" />
     <Compile Include="Exceptions\InvalidVectorDimensions.cs" />
     <Compile Include="Math\Vector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
