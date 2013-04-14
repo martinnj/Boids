@@ -42,6 +42,7 @@
     <Compile Include="Boids\Boid.cs" />
     <Compile Include="Boids\World.cs" />
     <Compile Include="Exceptions\InvalidVectorDimensions.cs" />
+    <Compile Include="Geometry\IGeometry.cs" />
     <Compile Include="Math\Vector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
