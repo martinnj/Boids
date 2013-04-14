@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Datatypes.Geometry
 {
-    interface IGeometry
+    /// <summary>
+    /// Interface describing minimum requirements for geometry types.
+    /// </summary>
+    public interface IGeometry
     {
     }
 }

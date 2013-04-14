@@ -5,15 +5,66 @@ using Datatypes.Math;
 
 namespace Datatypes.Boids
 {
-    /* Implements a simple "world" for boids to live in. Also includes the ability to
-     * contain obstacles that boids cannot pass through.
-     * The world will also be responsible for pdating the boids and calculate their movement.
-     */
-    class World
+    /// <summary>
+    /// Simple implementation of a "world".
+    /// Will hold all the boids and obstacles and be responsible for performing the simulation.
+    /// </summary>
+    public class World
     {
         #region "Properties"
+        /// <summary>
+        /// List of Datatypes.Boids.Boid that represent all the living boids in the world.
+        /// </summary>
         public List<Boid> Boids { get; set; }
+
+        /// <summary>
+        /// List of Datatypes.Geometry.IGeometry the represent all obstacles in the world.
+        /// </summary>
         public List<IGeometry> Obstacles { get; set; }
+        
+        /// <summary>
+        /// Hidden back-store for the size of the world.
+        /// </summary>
+        private Vector _size;
+        /// <summary>
+        /// Vector representing the multidimensional size of the world.
+        /// </summary>
+        /// <remarks>All boids with positions outside the world will be removed.</remarks>
+        public Vector Size
+        {
+            get { return _size; }
+            set {
+                _size = value;
+                foreach (var b in Boids)
+                {
+                    for (var i = 0; i < b.Position.Dimensions; i++ )
+                    {
+                        if (b.Position[i] >= 0 && b.Position[i] <= _size[i]) continue;
+                        Boids.Remove(b);
+                        break;
+                    } 
+                }
+            }
+
+        }
+
+        #endregion
+
+        #region "Constructors"
+        /// <summary>
+        /// Default constructor, creates a world with no boids and no obstacles and a size of 100x100x100.
+        /// </summary>
+        public World()
+        {
+            Boids = new List<Boid>();
+            Obstacles = new List<IGeometry>();
+            var s = new decimal[3];
+            s[0] = 100;
+            s[1] = 100;
+            s[2] = 100;
+            Size = new Vector(s);
+        }
+
         #endregion
 
         #region "Boid movement"

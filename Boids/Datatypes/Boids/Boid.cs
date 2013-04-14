@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Datatypes.Math;
 
 namespace Datatypes.Boids
@@ -7,7 +8,8 @@ namespace Datatypes.Boids
     /// Simple class representing a boid.
     /// Class will only contain stats and not have any advanced methods.
     /// </summary>
-    class Boid
+    /// <remarks>All boids are black as default.</remarks>
+    public class Boid
     {
         #region "Properties"
         /// <summary>
@@ -24,6 +26,12 @@ namespace Datatypes.Boids
         /// Integer value representing the boids placement in the foodchain. 0 means everyone can/will hunt it.
         /// </summary>
         public int    PredationLevel;
+
+        /// <summary>
+        /// The System.Drawing.Color of the boid if it is to be rendered.
+        /// </summary>
+        public Color Color;
+
         //TODO: Implement hunger in later model.
 
         #endregion
@@ -38,6 +46,7 @@ namespace Datatypes.Boids
             Position = new Vector(3);
             Velocity = new Vector(3);
             PredationLevel = 0;
+            Color = Color.Black;
         }
 
         /// <summary>
@@ -51,6 +60,7 @@ namespace Datatypes.Boids
             Position = position;
             Velocity = new Vector(position.Dimensions);
             PredationLevel = 0;
+            Color = Color.Black;
         }
 
         /// <summary>
@@ -67,7 +77,8 @@ namespace Datatypes.Boids
             if(predationLevel < 0) throw new ArgumentException("predationLevel cannot be less than zero.");
             Position = position;
             Velocity = new Vector(position.Dimensions);
-            PredationLevel = predationLevel; 
+            PredationLevel = predationLevel;
+            Color = Color.Black;
         }
 
         #endregion
