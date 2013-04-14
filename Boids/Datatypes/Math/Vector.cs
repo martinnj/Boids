@@ -4,16 +4,17 @@ using Datatypes.Exceptions;
 
 namespace Datatypes.Math
 {
-    /*
-     * Class used to represent an N-dimension vector.
-     * Possible changes:
-     * Find overrides for dot and cross products despite shared signature.
-     * Add functions for "adding/subtracting" a constant to all fields in the vector.
-     */
+    /// <summary>
+    /// Class providing access to functions for manipulating vectors.
+    /// Instanciable to represent a N-dimension vector by itself.
+    /// </summary>
     public class Vector
     {
 
         #region "Properties"
+        /// <summary>
+        /// Integer giving the number of dimensions the vector is constructed in.
+        /// </summary>
         public int Dimensions { get; private set; }
         // ReSharper disable FieldCanBeMadeReadOnly.Local
         private static decimal[] _values;
@@ -21,7 +22,10 @@ namespace Datatypes.Math
         #endregion
 
         #region "Constructors"
-        // Initialises the N-dimension vector with all fields set to 0.
+        /// <summary>
+        /// Initialises an instance the vector class with all fields set to 0.
+        /// </summary>
+        /// <param name="dimension">number of dimensions (fields) the vector should have.</param>
         public Vector(int dimension)
         {
             Dimensions = dimension;
@@ -32,7 +36,11 @@ namespace Datatypes.Math
             }
         }
 
-        // Initialise the vector with values from a decimal array.
+        /// <summary>
+        /// Initialises an instance of the vector class with values from a decimal array.
+        /// The vectors dimensions will be the length of the value array.
+        /// </summary>
+        /// <param name="values">decimal array with values to put in the vector.</param>
         public Vector(decimal[] values)
         {
             _values = values;
@@ -40,7 +48,11 @@ namespace Datatypes.Math
         }
         #endregion
 
-        // Add the ability to index directly in the vectors values.
+        /// <summary>
+        /// Access to the fields in the vector.
+        /// </summary>
+        /// <param name="i">Index/dimension to retrieve decimal from.</param>
+        /// <returns>The decimal stored in the i'th field.</returns>
         public decimal this[int i]
         {
             get { return _values[i]; }
@@ -48,7 +60,13 @@ namespace Datatypes.Math
         }
 
         #region "Math"
-        // Add two vectors together and return the resulting vector.
+        /// <summary>
+        /// Adds 2 vectors together and return the resulting vector.
+        /// </summary>
+        /// <param name="a">first N-dimension vector for addition.</param>
+        /// <param name="b">second N-dimension vector for addition.</param>
+        /// <returns>an N-dimension vector with the result.</returns>
+        /// <exception cref="Datatypes.Exceptions.InvalidVectorDimensions">Thrown when the dimensions of the a/b-vectors are not the same.</exception>
         public static Vector Add(Vector a, Vector b)
         {
             if (a.Dimensions != b.Dimensions) throw new InvalidVectorDimensions("a and b have different dimensions. (" + a.Dimensions + " != " + b.Dimensions + ")");
@@ -60,7 +78,11 @@ namespace Datatypes.Math
             return c;
         }
 
-        // Add a vector to"this" vector.
+        /// <summary>
+        /// Perform a vector addition on this N-dimension vector.
+        /// </summary>
+        /// <param name="a">N-dimension vector to use for addition.</param>
+        /// <exception cref="Datatypes.Exceptions.InvalidVectorDimensions">Thrown when the dimension of the a-vectors isnot the same as the instances.</exception>
         public void Add(Vector a)
         {
             if (a.Dimensions != Dimensions) throw new InvalidVectorDimensions("a dimensions(" + a.Dimensions + ") does not match own dimensions(" + Dimensions + ").");
@@ -70,7 +92,13 @@ namespace Datatypes.Math
             }
         }
 
-        // Subtract two vectors and return the resulting vector.
+        /// <summary>
+        /// Subtracts 2 vectors and return the resulting vector.
+        /// </summary>
+        /// <param name="a">first N-dimension vector for subtraction.</param>
+        /// <param name="b">second N-dimension vector for subtraction.</param>
+        /// <returns>an N-dimension vector with the result.</returns>
+        /// <exception cref="Datatypes.Exceptions.InvalidVectorDimensions">Thrown when the dimensions of the a/b-vectors are not the same.</exception>
         public static Vector Subtract(Vector a, Vector b)
         {
             if (a.Dimensions != b.Dimensions) throw new InvalidVectorDimensions("a and b have different dimensions. (" + a.Dimensions + " != " + b.Dimensions + ")");
@@ -82,7 +110,11 @@ namespace Datatypes.Math
             return c;
         }
 
-        // Subtract a vector from "this" vector.
+        /// <summary>
+        /// Perform a vector subtraction on this N-dimension vector.
+        /// </summary>
+        /// <param name="a">N-dimension vector to use for subtraction.</param>
+        /// <exception cref="Datatypes.Exceptions.InvalidVectorDimensions">Thrown when the dimension of the a-vectors isnot the same as the instances.</exception>
         public void Subtract(Vector a)
         {
             if (a.Dimensions != Dimensions) throw new InvalidVectorDimensions("a dimensions(" + a.Dimensions + ") does not match own dimensions(" + Dimensions + ").");
@@ -92,8 +124,13 @@ namespace Datatypes.Math
             }
         }
 
-        // Scale a vector with as scalar.
-        public static Vector Scale(Vector a, int scalar)
+        /// <summary>
+        /// Scale a vector with a decimal scalar.
+        /// </summary>
+        /// <param name="a">N-dimension vector to scale values in.</param>
+        /// <param name="scalar">scalar to use.</param>
+        /// <returns>N-dimension vector result.</returns>
+        public static Vector Scale(Vector a, decimal scalar)
         {
             var res = new Vector(a.Dimensions);
             for (var i = 0; i < a.Dimensions; i++)
@@ -103,8 +140,11 @@ namespace Datatypes.Math
             return res;
         }
 
-        // Scale "this" vector with a scalar.
-        public void Scale(int s)
+        /// <summary>
+        /// Scale the vector with a decimal scalar.
+        /// </summary>
+        /// <param name="s">decimal scalar to apply.</param>
+        public void Scale(decimal s)
         {
             for (var i = 0; i < Dimensions; i++)
             {
@@ -112,31 +152,45 @@ namespace Datatypes.Math
             }
         }
 
-        // Divide a vector with a scalar
-        // Will throw exception if scalar is 0.
-        public static Vector Div(Vector a, int s)
+        /// <summary>
+        /// Negative scaling of a vector using division.
+        /// </summary>
+        /// <param name="a">N-dimension vector to scale values in.</param>
+        /// <param name="scalar">decimal scalar to use.</param>
+        /// <returns>N-dimension vector result.</returns>
+        /// <exception cref="System.ArgumentException">Thrown if the scalar is zero.</exception>
+        public static Vector Div(Vector a, decimal scalar)
         {
-            if (s == 0) throw new ArgumentException("Scalar cannot be zero.");
+            if (scalar == 0) throw new ArgumentException("Scalar cannot be zero.");
             var b = new Vector(a.Dimensions);
             for (var i = 0; i < a.Dimensions; i++)
             {
-                b[i] = a[i]/s;
+                b[i] = a[i] / scalar;
             }
             return b;
         }
 
-        // Divide "this" vector with a scalar
-        // Will throw exception if scalar is 0.
-        public void Div(int s)
+        /// <summary>
+        ///  Negative scaling of the vector using division.
+        /// </summary>
+        /// <param name="scalar">decimal scalar to use.</param>
+        /// <exception cref="System.ArgumentException">Thrown if the scalar is zero.</exception>
+        public void Div(decimal scalar)
         {
-            if (s == 0) throw new ArgumentException("Scalar cannot be zero.");
+            if (scalar == 0) throw new ArgumentException("Scalar cannot be zero.");
             for (var i = 0; i < Dimensions; i++)
             {
-                _values[i] /= s;
+                _values[i] /= scalar;
             }
         }
 
-        // Calculate the cross-product of two vectors of same dimensions.
+        /// <summary>
+        /// Calculates the cross product of two N-dimension vectors.
+        /// </summary>
+        /// <param name="a">first N-dimension vector for cross product.</param>
+        /// <param name="b">second N-dimension vector for cross product.</param>
+        /// <returns>The resulting N-dimension vector.</returns>
+        /// <exception cref="Datatypes.Exceptions.InvalidVectorDimensions">Thrown when the dimensions of the a/b-vectors are not the same.</exception>
         public static Vector Cross(Vector a, Vector b)
         {
             if (a.Dimensions != b.Dimensions) throw new InvalidVectorDimensions("a and b have different dimensions. (" + a.Dimensions + " != " + b.Dimensions + ")");
@@ -149,7 +203,12 @@ namespace Datatypes.Math
             return c;
         }
 
-        // Cross a vector with "this" vector.
+        /// <summary>
+        /// Calculates the cross product of a N-dimension vector and this vector.
+        /// </summary>
+        /// <param name="a">N-dimension vector for cross product.</param>
+        /// <returns>The resulting N-dimension vector.</returns>
+        /// <exception cref="Datatypes.Exceptions.InvalidVectorDimensions">Thrown when the dimension of the a-vectors is not the same as the instances.</exception>
         public Vector Cross(Vector a)
         {
             if (a.Dimensions != Dimensions) throw new InvalidVectorDimensions("a dimensions(" + a.Dimensions + ") does not match own dimensions(" + Dimensions + ").");
@@ -163,7 +222,13 @@ namespace Datatypes.Math
             return c;
         }
 
-        // Calculate the dot product of 2 vectors of same dimensions.
+        /// <summary>
+        /// Calculates the dot product of two N-dimension vectors.
+        /// </summary>
+        /// <param name="a">first N-dimension vector for dot product.</param>
+        /// <param name="b">second N-dimension vector for dot product.</param>
+        /// <returns>The resulting N-dimension vector.</returns>
+        /// <exception cref="Datatypes.Exceptions.InvalidVectorDimensions">Thrown when the dimensions of the a/b-vectors are not the same.</exception>
         public static decimal Dot(Vector a, Vector b)
         {
             if (a.Dimensions != b.Dimensions) throw new InvalidVectorDimensions("a and b have different dimensions. (" + a.Dimensions + " != " + b.Dimensions + ")");
@@ -175,7 +240,12 @@ namespace Datatypes.Math
             return sum;
         }
 
-        // Calculate the dot product of this vector and another vector with same dimensions.
+        /// <summary>
+        /// Calculates the dot product of a N-dimension vector and this vector.
+        /// </summary>
+        /// <param name="a">N-dimension vector for dot product.</param>
+        /// <returns>The resulting N-dimension vector.</returns>
+        /// <exception cref="Datatypes.Exceptions.InvalidVectorDimensions">Thrown when the dimension of the a-vectors is not the same as the instances.</exception>
         public decimal Dot(Vector a)
         {
             if (a.Dimensions != Dimensions) throw new InvalidVectorDimensions("a dimensions(" + a.Dimensions + ") does not match own dimensions(" + Dimensions + ").");
@@ -187,21 +257,32 @@ namespace Datatypes.Math
             return sum;
         }
 
-        // Returns the length of a vector.
+        /// <summary>
+        /// Returns the linear length of a vector.
+        /// </summary>
+        /// <param name="a">N-dimension vector to calculate length for.</param>
+        /// <returns>a double containing the length of the vector.</returns>
         public static double Length(Vector a)
         {
             //TODO: find a way to avoid the conversion from decimal to double.
             return System.Math.Sqrt( Convert.ToDouble(a.Dot(a)) );
         }
 
-        // Return the length of this vector. Note this is not the Dimensions!
+        /// <summary>
+        /// Returns the linear length of the vector.
+        /// </summary>
+        /// <returns>a double containing the length of the vector.</returns>
         public double Length()
         {
             //TODO: find a way to avoid the conversion from decimal to double.
             return System.Math.Sqrt( Convert.ToDouble(Dot(this)) );
         }
 
-        // Invert a vector.
+        /// <summary>
+        /// Inverts the values in the vectors field (sign change).
+        /// </summary>
+        /// <param name="a">a N-dimension vector to invert.</param>
+        /// <returns>the N-dimension vector resulting from the inversion.</returns>
         public static Vector Inverse(Vector a)
         {
             var b = new Vector(a.Dimensions);
@@ -212,7 +293,9 @@ namespace Datatypes.Math
             return b;
         }
 
-        // Inverts "this" vector.
+        /// <summary>
+        /// Invert this vector (sign change).
+        /// </summary>
         public void Inverse()
         {
             for (var i = 0; i < Dimensions; i++)
@@ -223,7 +306,13 @@ namespace Datatypes.Math
         #endregion
 
         #region "Equality functions"
-        // Check if a vector equals "this" vector in terms of dimensions and values.
+
+        /// <summary>
+        /// Checks if a object instance of the Vector class is equal this vector.
+        /// Equal in this sense is they share the same dimensions and values.
+        /// </summary>
+        /// <param name="obj">Object Vector to compare to self.</param>
+        /// <returns>true if they are equal, false if they're not.</returns>
         public override bool Equals(Object obj)
         {
             if (obj == null) return false; // If object is null, return false.
@@ -240,12 +329,24 @@ namespace Datatypes.Math
             return res;
         }
 
-        // Checks if two vectors are equal to one another in terms of dimensions and values.
+        /// <summary>
+        /// Checks if two objects instances of the Vector class are the equal vector.
+        /// Equal in this sense is they share the same dimensions and values. 
+        /// </summary>
+        /// <param name="a">first vector to compare.</param>
+        /// <param name="b">second vector to compare.</param>
+        /// <returns>true if they are equal, false if they're not.</returns>
         public static bool Equals(Vector a, Vector b)
         {
             return a.Equals(b);
         }
-        
+
+        /// <summary>
+        /// Checks if a instance of the Vector class is equal this vector.
+        /// Equal in this sense is they share the same dimensions and values.
+        /// </summary>
+        /// <param name="a">Vector to compare to self.</param>
+        /// <returns>true if they are equal, false if they're not.</returns>>
         protected bool Equals(Vector a)
         {
             if (a == null) throw new ArgumentNullException("a");
@@ -258,6 +359,11 @@ namespace Datatypes.Math
             return res;
         }
 
+        /// <summary>
+        /// Generates a hashcode for this instance of the vector.
+        /// The hashcode is the sum of the number of dimensions, and the vector dotted with itself.
+        /// </summary>
+        /// <returns>an integer hashcode.</returns>
         public override int GetHashCode()
         {
             //TODO: Fix this, it will break for long arrays with big numbers.
@@ -266,42 +372,83 @@ namespace Datatypes.Math
         #endregion
 
         #region "Operator overrides"
-        // Override plus operator for vector addition.
+        /// <summary>
+        /// Operator override to make "+" add 2 vectors together and return the resulting vector.
+        /// </summary>
+        /// <param name="a">first N-dimension vector for addition.</param>
+        /// <param name="b">second N-dimension vector for addition.</param>
+        /// <returns>an N-dimension vector with the result.</returns>
+        /// <exception cref="Datatypes.Exceptions.InvalidVectorDimensions">Thrown when the dimensions of the a/b-vectors are not the same.</exception>
         public static Vector operator +(Vector a, Vector b)
         {
             return Add(a, b);
         }
 
-        // Override minus operator for vector subtraction.
+        /// <summary>
+        /// Operator override to make "-" subtract 2 vectors and return the resulting vector.
+        /// </summary>
+        /// <param name="a">first N-dimension vector for subtraction.</param>
+        /// <param name="b">second N-dimension vector for subtraction.</param>
+        /// <returns>an N-dimension vector with the result.</returns>
+        /// <exception cref="Datatypes.Exceptions.InvalidVectorDimensions">Thrown when the dimensions of the a/b-vectors are not the same.</exception>
         public static Vector operator -(Vector a, Vector b)
         {
             return Subtract(a, b);
         }
 
-        // Override minus operator for vector inversion.
+        /// <summary>
+        /// Operator override to make "-" invert the values in the vectors fields (sign change).
+        /// </summary>
+        /// <param name="a">a N-dimension vector to invert.</param>
+        /// <returns>the N-dimension vector resulting from the inversion.</returns>
         public static Vector operator -(Vector a)
         {
             return Inverse(a);
         }
 
-        // Override asterisk operator for vector scaling.
-        public static Vector operator *(Vector a, int s)
+        /// <summary>
+        /// Operator override to make "*" scale a vector with a decimal scalar.
+        /// </summary>
+        /// <param name="a">N-dimension vector to scale values in.</param>
+        /// <param name="scalar">scalar to use.</param>
+        /// <returns>N-dimension vector result.</returns>
+        public static Vector operator *(Vector a, decimal scalar)
         {
-            return Scale(a, s);
+            return Scale(a, scalar);
         }
         //TODO: Find sensible overrides for cross/dot.
 
-        // Override slash operator for vector division/scaling.
-        public static Vector operator /(Vector a, int s)
+        /// <summary>
+        /// Operator override to make "/" negative scale a vector using division.
+        /// </summary>
+        /// <param name="a">N-dimension vector to scale values in.</param>
+        /// <param name="scalar">decimal scalar to use.</param>
+        /// <returns>N-dimension vector result.</returns>
+        /// <exception cref="System.ArgumentException">Thrown if the scalar is zero.</exception>
+        public static Vector operator /(Vector a, decimal scalar)
         {
-            return Div(a, s);
+            return Div(a, scalar);
         }
 
-        // Override equality operators for vector comparison.
+        /// <summary>
+        /// Operator override to make "==" able to compare to vector instances.
+        /// Equal in this sense is they share the same dimensions and values.
+        /// </summary>
+        /// <param name="a">first vector to compare.</param>
+        /// <param name="b">second vector to compare.</param>
+        /// <returns>true if they are equal, false if not.</returns>
         public static bool operator ==(Vector a, Vector b)
         {
             return Equals(a, b);
         }
+
+        /// <summary>
+        /// Operator override to make "!=" able to compare to vector instances.
+        /// Equal in this sense is they share the same dimensions and values.
+        /// </summary>
+        /// <param name="a">first vector to compare.</param>
+        /// <param name="b">second vector to compare.</param>
+        /// <returns>false if they are equal, true if not.</returns>
         public static bool operator !=(Vector a, Vector b)
         {
             return !Equals(a, b);
@@ -311,6 +458,10 @@ namespace Datatypes.Math
 
         #region "Convinience functions"
 
+        /// <summary>
+        /// Gets the string representation of the vector.
+        /// </summary>
+        /// <returns>a string representation of the vector.</returns>
         public new string ToString()
         {
             var sb = new StringBuilder(); // Use stringbuffer to prevent concat-performance-drop when using massive vectors.
@@ -325,6 +476,11 @@ namespace Datatypes.Math
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Gets the string representation of a vector.
+        /// </summary>
+        /// <param name="a">the vector to get representation from.</param>
+        /// <returns>a string representation of the vector a.</returns>
         public static string ToString(Vector a)
         {
             return a.ToString();

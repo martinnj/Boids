@@ -21,5 +21,14 @@ namespace Datatypes.Boids
         // public int    HungerLevel;
 
         #endregion
+
+        #region "Constructor(s)"
+
+        public Boid()
+        {
+            
+        }
+
+        #endregion
     }
 }
