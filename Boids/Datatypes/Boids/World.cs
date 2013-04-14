@@ -8,7 +8,7 @@ namespace Datatypes.Boids
      */
     class World
     {
-        #region "Variables"
+        #region "Properties"
         public List<Boid> Boids { get; set; }
         public List<IGeometry> Obstacles { get; set; }
         #endregion

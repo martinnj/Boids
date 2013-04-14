@@ -13,7 +13,7 @@ namespace Datatypes.Math
     public class Vector
     {
 
-        #region "Variables"
+        #region "Properties"
         public int Dimensions { get; private set; }
         // ReSharper disable FieldCanBeMadeReadOnly.Local
         private static decimal[] _values;
