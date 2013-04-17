@@ -55,6 +55,7 @@ namespace Datatypes.Boids
         /// </summary>
         public decimal MaxSpeed;
         private decimal _maxForce;
+        private decimal _minSeperation;
 
         #endregion
 
@@ -73,6 +74,7 @@ namespace Datatypes.Boids
             Size = new Vector(s);
             MaxSpeed = 3;
             _maxForce = Convert.ToDecimal(0.05);
+            _minSeperation = 6;
         }
 
         #endregion
@@ -146,13 +148,31 @@ namespace Datatypes.Boids
 
         // Controls a boids wish to not collide with other boids
         // and avoid predators.
-        private static Vector Seperation(Boid boid, List<Boid> allies)
+        private Vector Seperation(Boid boid, IEnumerable<Boid> allies)
         {
-            throw new NotImplementedException();
+            var mean = new Vector(boid.Position.Dimensions);
+            var count = 0;
+            foreach (var ally in allies)
+            {
+                var d = Vector.Subtract(ally.Position, boid.Position).Magnitude();
+                if (d > 0 && Convert.ToDecimal(d) < _minSeperation)
+                {
+                    var t = Vector.Subtract(ally.Position, boid.Position);
+                    t.Normalize();
+                    t.Div(Convert.ToDecimal(d));
+                    mean.Add(t);
+                    count++;
+                }
+            }
+            if (count > 0)
+            {
+                mean.Div(count);
+            }
+            return mean;
         }
 
         // Controls a boids wish to fly in the same direction as other boids.
-        private static Vector Alignment(Boid boid, List<Boid> allies)
+        private Vector Alignment(Boid boid, List<Boid> allies)
         {
             throw new NotImplementedException();
         }
