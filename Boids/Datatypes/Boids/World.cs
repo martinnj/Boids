@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Datatypes.Geometry;
 using Datatypes.Math;
 
 namespace Datatypes.Boids
 {
     /// <summary>
-    /// Simple implementation of a "world".
+    /// Simple implementation of a "world", will be acting as the simulation engine.
     /// Will hold all the boids and obstacles and be responsible for performing the simulation.
     /// </summary>
     public class World
@@ -48,6 +49,13 @@ namespace Datatypes.Boids
 
         }
 
+        /// <summary>
+        /// The maximum speed a boid can travel.
+        /// TODO: Make this independent for each boid.
+        /// </summary>
+        public decimal MaxSpeed;
+        private decimal _maxForce;
+
         #endregion
 
         #region "Constructors"
@@ -63,6 +71,8 @@ namespace Datatypes.Boids
             s[1] = 100;
             s[2] = 100;
             Size = new Vector(s);
+            MaxSpeed = 3;
+            _maxForce = Convert.ToDecimal(0.05);
         }
 
         #endregion
@@ -71,23 +81,91 @@ namespace Datatypes.Boids
         // Note: Hunting instinct is not currently implemented in the model.
         //       Neither is obstacles.
 
-        // Controls a boids wish to stay close to other boids.
-        private Vector Cohesion(Boid boid)
+        /// <summary>
+        /// Updates the world, performs one "tick" meaning all objects gets
+        /// updated with one fictive time unit.
+        /// </summary>
+        public void Tick()
         {
-            throw new NotImplementedException();
+            foreach (var b in Boids)
+            {
+                UpdateBoid(b);
+            }
+        }
+
+        /// <summary>
+        /// Updates the given boid with a single tick.
+        /// </summary>
+        /// <param name="b">The boid to be updated.</param>
+        private void UpdateBoid(Boid b)
+        {
+            /* Construct a list of boids with same predationlevel
+             * Only use that list for updating positions
+             * TODO: Implement hunting and fleeing.
+             */
+            List<Boid> allies = Boids.Where(boid => boid.PredationLevel == b.PredationLevel && boid != b).ToList();
+            Vector c,s,a = new Vector(Size.Dimensions);
+            c = Cohesion(b,allies);
+            s = Seperation(b, allies);
+            a = Alignment(b, allies);
+        }
+
+        // Controls a boids wish to stay close to other boids.
+        private Vector Cohesion(Boid boid, List<Boid> allies)
+        {
+            if(allies.Count < 1) { return new Vector(boid.Position.Dimensions); }
+            var c = new Vector(boid.Position.Dimensions);
+            c = allies.Aggregate(c, (current, ally) => current + ally.Position);
+            c /= allies.Count();
+            return SteerTo(boid, c);
+        }
+
+        // Calculates the actual "motion" from the desired destination.
+        private Vector SteerTo(Boid boid, Vector desiredDestination)
+        {
+            var desired = Vector.Subtract(boid.Position, desiredDestination);
+            var d = desired.Magnitude();
+            if (d > 0)
+            {
+                desired.Normalize();
+                if (d < 100)
+                {
+                    desired.Scale(MaxSpeed*Convert.ToDecimal(d/100));
+                }
+                else
+                {
+                    desired.Scale(MaxSpeed);
+                }
+                var steer = desired;
+                steer.Subtract(boid.Velocity);
+                steer = Limit(steer, _maxForce);
+                return steer;
+            }
+            return new Vector(boid.Position.Dimensions);
         }
 
         // Controls a boids wish to not collide with other boids
         // and avoid predators.
-        private Vector Seperation(Boid boid)
+        private static Vector Seperation(Boid boid, List<Boid> allies)
         {
             throw new NotImplementedException();
         }
 
         // Controls a boids wish to fly in the same direction as other boids.
-        private Vector Alignment(Boid boid)
+        private static Vector Alignment(Boid boid, List<Boid> allies)
         {
             throw new NotImplementedException();
+        }
+
+        // Limit are both set on positive and negative side of origo.
+        private static Vector Limit(Vector a, decimal limit)
+        {
+            if (Convert.ToDecimal(a.Magnitude()) > limit)
+            {
+                a.Normalize();
+                return a*Convert.ToDecimal(limit);
+            }
+            return a;
         }
 
         #endregion

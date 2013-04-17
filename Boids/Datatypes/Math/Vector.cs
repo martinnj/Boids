@@ -258,24 +258,48 @@ namespace Datatypes.Math
         }
 
         /// <summary>
-        /// Returns the linear length of a vector.
+        /// Returns the magnitude of a vector.
         /// </summary>
         /// <param name="a">N-dimension vector to calculate length for.</param>
-        /// <returns>a double containing the length of the vector.</returns>
-        public static double Length(Vector a)
+        /// <returns>a double containing the magnitude of the vector.</returns>
+        public static double Magnitude(Vector a)
         {
             //TODO: find a way to avoid the conversion from decimal to double.
             return System.Math.Sqrt( Convert.ToDouble(a.Dot(a)) );
         }
 
         /// <summary>
-        /// Returns the linear length of the vector.
+        /// Returns the magnitude of the vector.
         /// </summary>
-        /// <returns>a double containing the length of the vector.</returns>
-        public double Length()
+        /// <returns>a double containing the magnitude of the vector.</returns>
+        public double Magnitude()
         {
             //TODO: find a way to avoid the conversion from decimal to double.
             return System.Math.Sqrt( Convert.ToDouble(Dot(this)) );
+        }
+
+        /// <summary>
+        /// Normalize the N-dimensional vector A.
+        /// </summary>
+        /// <param name="a">N-dimensional vector to be normalized.</param>
+        /// <returns>N-dimensional normalized vector.</returns>
+        public static Vector Normalize(Vector a)
+        {
+            var r = a;
+            r.Normalize();
+            return r;
+        }
+
+        /// <summary>
+        /// Normalize this vector.
+        /// </summary>
+        public void Normalize()
+        {
+            var m = this.Magnitude();
+            for (var i = 0; i < _values.Length; i++)
+            {
+                _values[i] = _values[i]/Convert.ToDecimal(m);
+            }
         }
 
         /// <summary>
