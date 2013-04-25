@@ -105,11 +105,10 @@ namespace Datatypes.Boids
              * Only use that list for updating positions
              * TODO: Implement hunting and fleeing.
              */
-            List<Boid> allies = Boids.Where(boid => boid.PredationLevel == b.PredationLevel && boid != b).ToList();
-            Vector c,s,a = new Vector(Size.Dimensions);
-            c = Cohesion(b,allies);
-            s = Seperation(b, allies);
-            a = Alignment(b, allies);
+            var allies = Boids.Where(boid => boid.PredationLevel == b.PredationLevel && boid != b).ToList();
+            var c = Cohesion(b, allies);
+            var s = Seperation(b, allies);
+            var a = Alignment(b, allies);
 
             //TODO: Add weights for movement (cohesion is most important etc)
             var acceleration = c + s + a;
