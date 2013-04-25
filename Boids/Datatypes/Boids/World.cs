@@ -184,7 +184,7 @@ namespace Datatypes.Boids
             var count = 0;
             foreach (var ally in allies)
             {
-                mean += boid.Velocity;
+                mean += ally.Velocity;
                 count++;
             }
             if (count > 0)
