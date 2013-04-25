@@ -110,6 +110,12 @@ namespace Datatypes.Boids
             c = Cohesion(b,allies);
             s = Seperation(b, allies);
             a = Alignment(b, allies);
+
+            //TODO: Add weights for movement (cohesion is most important etc)
+            var acceleration = c + s + a;
+            b.Velocity += acceleration;
+            b.Velocity = Limit(b.Velocity, MaxSpeed);
+            b.Position += b.Velocity;
         }
 
         // Controls a boids wish to stay close to other boids.
