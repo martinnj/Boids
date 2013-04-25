@@ -174,7 +174,19 @@ namespace Datatypes.Boids
         // Controls a boids wish to fly in the same direction as other boids.
         private Vector Alignment(Boid boid, List<Boid> allies)
         {
-            throw new NotImplementedException();
+            var mean = new Vector(boid.Position.Dimensions);
+            var count = 0;
+            foreach (var ally in allies)
+            {
+                mean += boid.Velocity;
+                count++;
+            }
+            if (count > 0)
+            {
+                mean.Div(count);
+            }
+            mean = Limit(mean, _maxForce);
+            return mean;
         }
 
         // Limit are both set on positive and negative side of origo.
